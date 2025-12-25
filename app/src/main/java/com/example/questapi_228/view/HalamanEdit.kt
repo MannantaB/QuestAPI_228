@@ -8,6 +8,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.questapi_228.uicontroller.route.DestinasiEdit
 import com.example.questapi_228.viewmodel.EditViewModel
 import com.example.questapi_228.viewmodel.provider.PenyediaViewModel
 import kotlinx.coroutines.launch
@@ -23,7 +24,7 @@ fun EditSiswaScreen(
     Scaffold (
         topBar = {
             SiswaTopAppBar(
-                title = stringResource(DestinasiEditSiswa.titleRes),
+                title = stringResource(DestinasiEdit.titleRes),
                 canNavigateBack = true,
                 navigateUp = onNavigateUp
             )
@@ -36,7 +37,7 @@ fun EditSiswaScreen(
             onSiswaValueChange = viewModel::updateUiState,
             onSaveClick = {
                 coroutineScope.launch {
-                    viewModel.updateSiswa()
+                    viewModel.editSatuSiswa()
                     navigateBack()
                 }
             },
