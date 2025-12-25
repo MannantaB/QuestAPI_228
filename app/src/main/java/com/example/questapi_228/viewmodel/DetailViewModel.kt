@@ -1,5 +1,3 @@
-@file:OptIn(InternalSerializationApi::class)
-
 package com.example.questapi_228.viewmodel
 
 import android.annotation.SuppressLint
@@ -15,6 +13,7 @@ import com.example.questapi_228.uicontroller.route.DestinasiDetail
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import retrofit2.Response
+import java.io.IOException
 
 sealed interface StatusUIDetail {
     data class Success(val satusiswa: DataSiswa) : StatusUIDetail
@@ -38,7 +37,7 @@ class DetailViewModel(savedStateHandle: SavedStateHandle, private val repository
             statusUIDetail = try {
                 StatusUIDetail.Success(satusiswa = repositoryDataSiswa.getSatuSiswa(idSiswa))
             }
-            catch (e: Exception){
+            catch (e: IOException){
                 StatusUIDetail.Error
             }
             catch (e: HttpException){
