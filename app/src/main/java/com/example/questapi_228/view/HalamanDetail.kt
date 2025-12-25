@@ -35,7 +35,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.questapi_228.R
+import com.example.questapi_228.modeldata.DataSiswa
+import com.example.questapi_228.uicontroller.route.DestinasiDetail
 import com.example.questapi_228.viewmodel.DetailViewModel
+import com.example.questapi_228.viewmodel.StatusUIDetail
 import com.example.questapi_228.viewmodel.provider.PenyediaViewModel
 import kotlinx.coroutines.launch
 
@@ -50,15 +53,18 @@ fun DetailSiswaScreen(
     Scaffold(
         topBar = {
             SiswaTopAppBar(
-                title = stringResource(DestinasiDetailSiswa.titleRes),
+                title = stringResource(DestinasiDetail.titleRes),
                 canNavigateBack = true,
                 navigateUp = navigateBack
             )
         },
         floatingActionButton = {
-            val uiState = viewModel.uiDetailState.collectAsState()
+            val uiState = viewModel.statusUIDetail
             FloatingActionButton(
-                onClick = { navigateToEditItem(uiState.value.detailSiswa.id) },
+                onClick = {
+                    when(uiState){is StatusUIDetail.Success ->
+                        navigateToEditItem(uiState.satusiswa.id) else -> {}}
+                          },
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
 
@@ -70,12 +76,11 @@ fun DetailSiswaScreen(
             }
         }, modifier = modifier
     ) { innerPadding ->
-        val uiState = viewModel.uiDetailState.collectAsState()
         val coroutineScope = rememberCoroutineScope()
         BodyDetailDataSiswa(
-            detailSiswaUiState = uiState.value,
+            statusUIDetail = viewModel.statusUIDetail,
             onDelete = { coroutineScope.launch {
-                viewModel.deleteSiswa()
+                viewModel.hapusSiswa()
                 navigateBack()
             }},
             modifier = Modifier
@@ -87,7 +92,7 @@ fun DetailSiswaScreen(
 
 @Composable
 private fun BodyDetailDataSiswa(
-    detailSiswaUiState: DetailSiswaUiState,
+    statusUIDetail: StatusUIDetail,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -96,12 +101,12 @@ private fun BodyDetailDataSiswa(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
         var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
-
-        DetailDataSiswa(
-            siswa = detailSiswaUiState.detailSiswa.toSiswa(),
-            modifier = Modifier.fillMaxWidth()
-        )
-
+        when(statusUIDetail){
+            is StatusUIDetail.Success -> DetailDataSiswa(
+                siswa = statusUIDetail.satusiswa,
+                modifier = Modifier.fillMaxWidth())
+            else -> {}
+        }
         OutlinedButton(
             onClick = { deleteConfirmationRequired = true },
             shape = MaterialTheme.shapes.small,
@@ -124,7 +129,7 @@ private fun BodyDetailDataSiswa(
 
 @Composable
 fun DetailDataSiswa(
-    siswa: Siswa, modifier: Modifier = Modifier
+    siswa: DataSiswa, modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier, colors = CardDefaults.cardColors(
