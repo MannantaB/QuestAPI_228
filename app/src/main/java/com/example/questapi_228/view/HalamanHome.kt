@@ -99,14 +99,15 @@ fun HomeBody(
 ){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
+        modifier = modifier
     ) {
         when (statusUiSiswa){
             is StatusUiSiswa.Loading -> LoadingScreen()
 
             is StatusUiSiswa.Success -> DaftarSiswa(itemSiswa = statusUiSiswa
                 .siswa,
-                onSiswaClick = {onSiswaClick(it.id)})
+                onSiswaClick = {onSiswaClick(it.id)},
+                modifier = Modifier.fillMaxSize())
 
             is StatusUiSiswa.Error -> ErrorScreen(
                 retryAction,
@@ -146,7 +147,7 @@ fun DaftarSiswa(
     onSiswaClick: (DataSiswa) -> Unit,
     modifier: Modifier = Modifier
 ){
-    LazyColumn(modifier = Modifier) {
+    LazyColumn(modifier = modifier) {
         items(items = itemSiswa, key = {it.id}){
                 person -> ItemSiswa(
             siswa = person,

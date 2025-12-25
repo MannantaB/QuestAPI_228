@@ -36,7 +36,7 @@ class DefaultContainerApp : ContainerApp{
         .client(klien)
         .build()
 
-    private val retrofitService : ServiceApiSiswa by lazy {
+    private val retrofitService: ServiceApiSiswa by lazy {
         retrofit.create(ServiceApiSiswa::class.java)
     }
 
@@ -52,4 +52,3 @@ class AplikasiDataSiswa : Application() {
         this.container = DefaultContainerApp()
     }
 }
-
