@@ -19,4 +19,7 @@
     <string name="update">Edit</string>
     <string name="attention">Perhatian</string>
     <string name="tanya">Apakah anda yakin menghapus ini ?</string>
+    <string name="loading">Loading</string>
+    <string name="gagal">Failed</string>
+    <string name="retry">Retry</string>
 </resources>
