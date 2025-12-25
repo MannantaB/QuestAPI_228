@@ -2,6 +2,7 @@
 
 package com.example.questapi_228.viewmodel
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -13,6 +14,7 @@ import com.example.questapi_228.repositori.RepositoryDataSiswa
 import com.example.questapi_228.uicontroller.route.DestinasiDetail
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import retrofit2.Response
 
 sealed interface StatusUIDetail {
     data class Success(val satusiswa: DataSiswa) : StatusUIDetail
@@ -44,6 +46,16 @@ class DetailViewModel(savedStateHandle: SavedStateHandle, private val repository
             }
        }
     }
+
+    @SuppressLint("SuspiciousIndentation")
+    suspend fun hapusSiswa(){
+        val resp: Response<Void> = repositoryDataSiswa.hapusDataSiswa(idSiswa)
+            if(resp.isSuccessful){
+                println("Sukses Hapus Data : ${resp.message()}")
+            }else {
+                println("Gagal Hapus Data : ${resp.errorBody()}")
+            }
+        }
     }
 
 
